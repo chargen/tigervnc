@@ -570,6 +570,10 @@ public class VncViewer extends javax.swing.JApplet
   = new StringParameter("MenuKey",
                         "The key which brings up the popup menu",
                         "F8");
+  BoolParameter resizeToLocal
+  = new BoolParameter("ResizeToLocal",
+                      "Resize remote session to the local window",
+                      false);
   StringParameter desktopSize
   = new StringParameter("DesktopSize",
                         "Reconfigure desktop size on the server on "+

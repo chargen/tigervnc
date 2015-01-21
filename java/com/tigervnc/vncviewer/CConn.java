@@ -1000,6 +1000,7 @@ public class CConn extends CConnection implements
     options.resizeWidth.setText(resizeWidth != null && resizeWidth.length() > 0 ? resizeWidth : "1024");
     String resizeHeight = UserPreferences.get("global", "ResizeHeight");
     options.resizeHeight.setText(resizeHeight != null && resizeHeight.length() > 0 ? resizeHeight : "768");
+    options.resizeToLocal.setSelected(UserPreferences.getBool("global", "ResizeToLocal"));
     options.fullScreen.setSelected(fullScreen);
     options.useLocalCursor.setSelected(viewer.useLocalCursor.getValue());
     options.acceptBell.setSelected(viewer.acceptBell.getValue());
@@ -1083,6 +1084,8 @@ public class CConn extends CConnection implements
     if (options.resizeOnConnect.isSelected()) {
       viewer.desktopSize.setParam(options.resizeWidth.getText() + "x"  + options.resizeHeight.getText());
     }
+
+    viewer.resizeToLocal.setParam(options.resizeToLocal.isSelected());
 
     String scaleString =
       options.scalingFactor.getSelectedItem().toString();

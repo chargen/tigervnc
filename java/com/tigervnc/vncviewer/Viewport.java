@@ -109,7 +109,7 @@ public class Viewport extends JFrame
           cc.setCursor(cursor.width(),cursor.height(),cursor.hotspot,
                        cursor.data, cursor.mask);
         }
-        if (cc.cp.supportsDesktopResize) {
+        if (cc.cp.supportsDesktopResize && cc.viewer.resizeToLocal.getValue()) {
           if (resizeTimer != null)
             resizeTimer.cancel();
 

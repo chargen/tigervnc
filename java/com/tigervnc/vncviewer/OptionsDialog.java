@@ -45,7 +45,7 @@ class OptionsDialog extends Dialog implements
   JRadioButton zrle, hextile, tight, raw;
   JRadioButton fullColour, mediumColour, lowColour, veryLowColour;
   JCheckBox viewOnly, acceptClipboard, sendClipboard, acceptBell;
-  JCheckBox resizeOnConnect, fullScreen, shared, useLocalCursor;
+  JCheckBox resizeToLocal, resizeOnConnect, fullScreen, shared, useLocalCursor;
   JCheckBox secVeNCrypt, encNone, encTLS, encX509;
   JCheckBox secNone, secVnc, secPlain, secIdent, sendLocalUsername;
   JButton okButton, cancelButton;
@@ -156,6 +156,7 @@ class OptionsDialog extends Dialog implements
     resizeHeight = new JTextField("768", 4);
     resizeHeight.addActionListener(this);
     resizeHeight.setEnabled(false);
+    resizeToLocal = new JCheckBox("Resize remote session to the local window");
     fullScreen = new JCheckBox("Full-screen mode");
     fullScreen.addItemListener(this);
     fullScreen.setEnabled(!cc.viewer.embed.getValue());
@@ -189,12 +190,13 @@ class OptionsDialog extends Dialog implements
     scalingFactor.setEnabled(!cc.viewer.embed.getValue());
     addGBComponent(resizeOnConnect,MiscPanel,0, 0, 2, 1, 2, 2, 1, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.LINE_START, new Insets(4,5,0,5));
     addGBComponent(resizePanel,MiscPanel,    0, 1, 2, 1, 2, 2, 1, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.LINE_START, new Insets(0,20,0,5));
-    addGBComponent(fullScreen,MiscPanel,     0, 2, 2, 1, 2, 2, 1, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.LINE_START, new Insets(4,5,0,5));
-    addGBComponent(shared,MiscPanel,         0, 3, 2, 1, 2, 2, 1, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.LINE_START, new Insets(4,5,0,5));
-    addGBComponent(useLocalCursor,MiscPanel, 0, 4, 2, 1, 2, 2, 1, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.LINE_START, new Insets(4,5,0,5));
-    addGBComponent(acceptBell,MiscPanel,     0, 5, 2, 1, 2, 2, 1, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.FIRST_LINE_START, new Insets(4,5,0,5));
-    addGBComponent(scalingFactorLabel,MiscPanel, 0, 6, 1, GridBagConstraints.REMAINDER, 2, 2, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, new Insets(8,8,0,5));
-    addGBComponent(scalingFactor,MiscPanel, 1, 6, 1, GridBagConstraints.REMAINDER, 2, 2, 25, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, new Insets(4,5,0,5));
+    addGBComponent(resizeToLocal,MiscPanel,  0, 2, 2, 1, 2, 2, 1, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.LINE_START, new Insets(4,5,0,5));
+    addGBComponent(fullScreen,MiscPanel,     0, 3, 2, 1, 2, 2, 1, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.LINE_START, new Insets(4,5,0,5));
+    addGBComponent(shared,MiscPanel,         0, 4, 2, 1, 2, 2, 1, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.LINE_START, new Insets(4,5,0,5));
+    addGBComponent(useLocalCursor,MiscPanel, 0, 5, 2, 1, 2, 2, 1, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.LINE_START, new Insets(4,5,0,5));
+    addGBComponent(acceptBell,MiscPanel,     0, 6, 2, 1, 2, 2, 1, 0, GridBagConstraints.HORIZONTAL, GridBagConstraints.FIRST_LINE_START, new Insets(4,5,0,5));
+    addGBComponent(scalingFactorLabel,MiscPanel, 0, 7, 1, GridBagConstraints.REMAINDER, 2, 2, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, new Insets(8,8,0,5));
+    addGBComponent(scalingFactor,MiscPanel, 1, 7, 1, GridBagConstraints.REMAINDER, 2, 2, 25, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, new Insets(4,5,0,5));
 
     // load/save tab
     DefaultsPanel=new JPanel(new GridBagLayout());
@@ -348,6 +350,7 @@ class OptionsDialog extends Dialog implements
     UserPreferences.set("global", "ResizeOnConnect", resizeOnConnect.isSelected());
     UserPreferences.set("global", "ResizeWidth", resizeWidth.getText());
     UserPreferences.set("global", "ResizeHeight", resizeHeight.getText());
+    UserPreferences.set("global", "ResizeToLocal", resizeToLocal.isSelected());
     UserPreferences.set("global", "FullScreen", fullScreen.isSelected());
     UserPreferences.set("global", "Shared", shared.isSelected());
     UserPreferences.set("global", "UseLocalCursor", useLocalCursor.isSelected());
@@ -424,6 +427,7 @@ class OptionsDialog extends Dialog implements
     resizeWidth.setEnabled(resizeOnConnect.isSelected());
     resizeHeight.setText(UserPreferences.get("global", "ResizeHeight"));
     resizeHeight.setEnabled(resizeOnConnect.isSelected());
+    resizeToLocal.setSelected(UserPreferences.getBool("global", "ResizeToLocal"));
     fullScreen.setSelected(UserPreferences.getBool("global", "FullScreen"));
     if (shared.isEnabled())
       shared.setSelected(UserPreferences.getBool("global", "Shared"));
