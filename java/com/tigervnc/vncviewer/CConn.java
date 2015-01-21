@@ -418,6 +418,12 @@ public class CConn extends CConnection implements
   public void requestDesktopSize(int width, int height) {
     ScreenSet layout;
 
+    if (!cp.supportsDesktopResize)
+      return;
+
+    if (width == cp.width && height == cp.height)
+      return;
+
     layout = cp.screenLayout;
 
     if (layout.num_screens() == 0)
@@ -543,7 +549,12 @@ public class CConn extends CConnection implements
       desktop.setScaledSize();
       setupEmbeddedFrame();
     } else {
-      recreateViewport();
+      if (viewport != null) {
+        viewport.setSize(cp.width, cp.height);
+        reconfigureViewport();
+      } else {
+        recreateViewport();
+      }
     }
   }
   

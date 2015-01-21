@@ -31,6 +31,8 @@ import java.awt.Image;
 import java.awt.Window;
 import java.lang.reflect.*;
 import javax.swing.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.tigervnc.rfb.*;
 import java.lang.Exception;
@@ -106,6 +108,18 @@ public class Viewport extends JFrame
           Cursor cursor = cc.desktop.cursor;
           cc.setCursor(cursor.width(),cursor.height(),cursor.hotspot,
                        cursor.data, cursor.mask);
+        }
+        if (cc.cp.supportsDesktopResize) {
+          if (resizeTimer != null)
+            resizeTimer.cancel();
+
+          resizeTimer = new Timer();
+          resizeTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+              cc.requestDesktopSize(sp.getSize().width, sp.getSize().height);
+            }
+          }, 200);
         }
       }
     });
@@ -187,5 +201,6 @@ public class Viewport extends JFrame
   JScrollPane sp;
   boolean canDoLionFS;
   static LogWriter vlog = new LogWriter("Viewport");
+  Timer resizeTimer;
 }
 
