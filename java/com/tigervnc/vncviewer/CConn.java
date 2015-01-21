@@ -537,8 +537,6 @@ public class CConn extends CConnection implements
 
     if ((cp.width == 0) && (cp.height == 0))
       return;
-    if ((desktop.width() == cp.width) && (desktop.height() == cp.height))
-      return;
 
     desktop.resize();
     if (viewer.embed.getValue()) {
