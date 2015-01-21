@@ -395,32 +395,8 @@ public class CConn extends CConnection implements
           viewer.desktopSize.getValue().split("x").length == 2) {
         width = Integer.parseInt(viewer.desktopSize.getValue().split("x")[0]);
         height = Integer.parseInt(viewer.desktopSize.getValue().split("x")[1]);
-        ScreenSet layout;
 
-        layout = cp.screenLayout;
-
-        if (layout.num_screens() == 0)
-          layout.add_screen(new Screen());
-        else if (layout.num_screens() != 1) {
-
-          while (true) {
-            Iterator<Screen> iter = layout.screens.iterator();
-            Screen screen = (Screen)iter.next();
-
-            if (!iter.hasNext())
-              break;
-
-            layout.remove_screen(screen.id);
-          }
-        }
-
-        Screen screen0 = (Screen)layout.screens.iterator().next();
-        screen0.dimensions.tl.x = 0;
-        screen0.dimensions.tl.y = 0;
-        screen0.dimensions.br.x = width;
-        screen0.dimensions.br.y = height;
-
-        writer().writeSetDesktopSize(width, height, layout);
+        requestDesktopSize(width, height);
       }
 
       firstUpdate = false;
@@ -437,6 +413,35 @@ public class CConn extends CConnection implements
     // Compute new settings based on updated bandwidth values
     if (autoSelect)
       autoSelectFormatAndEncoding();
+  }
+
+  public void requestDesktopSize(int width, int height) {
+    ScreenSet layout;
+
+    layout = cp.screenLayout;
+
+    if (layout.num_screens() == 0)
+      layout.add_screen(new Screen());
+    else if (layout.num_screens() != 1) {
+
+      while (true) {
+        Iterator<Screen> iter = layout.screens.iterator();
+        Screen screen = (Screen)iter.next();
+
+        if (!iter.hasNext())
+          break;
+
+        layout.remove_screen(screen.id);
+      }
+    }
+
+    Screen screen0 = (Screen)layout.screens.iterator().next();
+    screen0.dimensions.tl.x = 0;
+    screen0.dimensions.tl.y = 0;
+    screen0.dimensions.br.x = width;
+    screen0.dimensions.br.y = height;
+
+    writer().writeSetDesktopSize(width, height, layout);
   }
 
   // The rest of the callbacks are fairly self-explanatory...
