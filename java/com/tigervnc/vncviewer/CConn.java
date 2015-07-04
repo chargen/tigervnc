@@ -118,6 +118,7 @@ public class CConn extends CConnection implements
       String name = sock.getPeerEndpoint();
       vlog.info("Accepted connection from " + name);
     } else {
+      /*
       if (vncServerName != null &&
           !viewer.alwaysShowServerDialog.getValue()) {
         serverHost = Hostname.getHost(vncServerName);
@@ -139,6 +140,14 @@ public class CConn extends CConnection implements
         throw new Exception(e.getMessage());
       }
       vlog.info("connected to host "+serverHost+" port "+serverPort);
+      */
+      try {
+        //sock = PipeSocket.create("/usr/bin/sh", "-c", vncServerName);
+        sock = SSHExecSocket.create("localhost", 2222, "./vncpipe.pl");
+        vlog.info("created pipesocket");
+      } catch (java.lang.Exception e) {
+        throw new Exception(e.getMessage());
+      }
     }
 
     sock.inStream().setBlockCallback(this);
