@@ -50,7 +50,7 @@ namespace rdr {
 
   private:
     int overrun(int itemSize, int nItems);
-    int writeWithTimeout(const void* data, int length, int timeoutms);
+    virtual int writeWithTimeout(const void* data, int length, int timeoutms);
     int fd;
     bool blocking;
     int timeoutms;

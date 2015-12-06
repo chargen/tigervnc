@@ -264,6 +264,16 @@ if(ENABLE_PAM)
 endif()
 set(HAVE_PAM ${ENABLE_PAM})
 
+# Check for libssh2 library
+option(ENABLE_LIBSSH2 "Enable libssh2 for SSH transport support" ON)
+if(ENABLE_LIBSSH2)
+  find_package(LibSSH2)
+  if (LIBSSH2_FOUND)
+    include_directories(${LIBSSH2_INCLUDE_DIR})
+    add_definitions("-DHAVE_LIBSSH2")
+  endif()
+endif()
+
 # Generate config.h and make sure the source finds it
 configure_file(config.h.in config.h)
 add_definitions(-DHAVE_CONFIG_H)

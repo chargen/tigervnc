@@ -39,6 +39,7 @@
 #include <rdr/MemInStream.h>
 #include <rdr/MemOutStream.h>
 #include <network/TcpSocket.h>
+#include <network/Ssh2Socket.h>
 
 #include <FL/Fl.H>
 #include <FL/fl_ask.H>
@@ -106,7 +107,7 @@ CConn::CConn(const char* vncServerName, network::Socket* socket=NULL)
     try {
       getHostAndPort(vncServerName, &serverHost, &serverPort);
 
-      sock = new network::TcpSocket(serverHost, serverPort);
+      sock = new network::Ssh2Socket(serverHost, serverPort);
       vlog.info(_("connected to host %s port %d"), serverHost, serverPort);
     } catch (rdr::Exception& e) {
       vlog.error("%s", e.str());

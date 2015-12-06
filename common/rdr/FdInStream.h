@@ -54,14 +54,14 @@ namespace rdr {
 
   protected:
     int overrun(int itemSize, int nItems, bool wait);
+    FdInStreamBlockCallback* blockCallback;
+    int timeoutms;
 
   private:
-    int readWithTimeoutOrCallback(void* buf, int len, bool wait=true);
+    virtual int readWithTimeoutOrCallback(void* buf, int len, bool wait=true);
 
     int fd;
     bool closeWhenDone;
-    int timeoutms;
-    FdInStreamBlockCallback* blockCallback;
 
     bool timing;
     unsigned int timeWaitedIn100us;
